@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <h2>Добавить новый рецепт</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить рецепт</button>
+</form>
+
+</head>
+<body>
+
+</body>
+</html>

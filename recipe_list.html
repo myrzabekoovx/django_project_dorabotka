@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <h2>Список рецептов</h2>
+<ul>
+    {% for recipe in recipes %}
+        <li>
+            <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+</head>
+<body>
+
+</body>
+</html>
