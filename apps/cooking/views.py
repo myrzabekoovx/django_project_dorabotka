@@ -3,6 +3,8 @@ from .models import Recipe, RecipeRating
 from .forms import RecipeForm, RecipeRatingForm
 from django.contrib.auth.decorators import login_required
 
+
+
 # Страница добавления нового рецепта
 @login_required
 def add_recipe(request):
