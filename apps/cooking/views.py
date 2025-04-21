@@ -5,41 +5,7 @@ from .models import Recipe, Ingredient, CookingStep, Comment
 from .forms import RecipeForm, CommentForm
 
 
-@login_required
-def create_recipe(request):
-
-    if request.method == 'POST':
-        form = RecipeForm(request.POST, request.FILES)
-        if form.is_valid():
-            try:
-
-                recipe = form.save(commit=False)
-                recipe.author = request.user
-                recipe.save()
-
-
-                ingredients_text = form.cleaned_data.get('ingredients', '')
-                self._process_ingredients(recipe, ingredients_text)
-
-                steps_text = form.cleaned_data.get('cooking_steps', '')
-                self._process_cooking_steps(recipe, steps_text)
-
-                messages.success(request, 'Рецепт успешно создан!')
-                return redirect('recipe_detail', slug=recipe.slug)
-
-            except Exception as e:
-                messages.error(request, f'Ошибка при создании рецепта: {str(e)}')
-
-    else:
-        form = RecipeForm()
-
-    return render(request, 'recipes/create_recipe.html', {
-        'form': form,
-        'title': 'Создание нового рецепта'
-    })
-
-
-def _process_ingredients(self, recipe, ingredients_text):
+def _process_ingredients(recipe, ingredients_text):
     """Обработка и сохранение ингредиентов"""
     for line in ingredients_text.split('\n'):
         line = line.strip()
@@ -54,7 +20,7 @@ def _process_ingredients(self, recipe, ingredients_text):
             )
 
 
-def _process_cooking_steps(self, recipe, steps_text):
+def _process_cooking_steps(recipe, steps_text):
     """Обработка и сохранение шагов приготовления"""
     for i, step in enumerate(steps_text.split('\n'), 1):
         step = step.strip()
@@ -64,6 +30,36 @@ def _process_cooking_steps(self, recipe, steps_text):
                 step_number=i,
                 instruction=step
             )
+
+
+@login_required
+def create_recipe(request):
+    if request.method == 'POST':
+        form = RecipeForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                recipe = form.save(commit=False)
+                recipe.author = request.user
+                recipe.save()
+
+                ingredients_text = form.cleaned_data.get('ingredients', '')
+                _process_ingredients(recipe, ingredients_text)  # Убрано self.
+
+                steps_text = form.cleaned_data.get('cooking_steps', '')
+                _process_cooking_steps(recipe, steps_text)  # Убрано self.
+
+                messages.success(request, 'Рецепт успешно создан!')
+                return redirect('recipe_detail', slug=recipe.slug)
+
+            except Exception as e:
+                messages.error(request, f'Ошибка при создании рецепта: {str(e)}')
+    else:
+        form = RecipeForm()
+
+    return render(request, 'recipes/create_recipe.html', {
+        'form': form,
+        'title': 'Создание нового рецепта'
+    })
 
 
 def recipe_detail(request, slug):

@@ -26,3 +26,5 @@ admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Category)
 admin.site.register(Comment)
 admin.site.register(UserProfile)
+
+
