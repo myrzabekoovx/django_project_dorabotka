@@ -43,10 +43,10 @@ def create_recipe(request):
                 recipe.save()
 
                 ingredients_text = form.cleaned_data.get('ingredients', '')
-                _process_ingredients(recipe, ingredients_text)  # Убрано self.
+                _process_ingredients(recipe, ingredients_text)
 
                 steps_text = form.cleaned_data.get('cooking_steps', '')
-                _process_cooking_steps(recipe, steps_text)  # Убрано self.
+                _process_cooking_steps(recipe, steps_text)
 
                 messages.success(request, 'Рецепт успешно создан!')
                 return redirect('recipe_detail', slug=recipe.slug)
